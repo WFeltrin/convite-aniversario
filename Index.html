@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Convite — Aniversário do João e da Maria</title>
+  <meta name="description" content="Convite de aniversário — modelo simples, elegante e com RSVP coletável." />
+  <style>
+    :root{
+      --bg: #fafafa;
+      --card: #ffffff;
+      --ink: #111827; /* cinza-900 */
+      --muted: #6b7280; /* cinza-500 */
+      --accent: #0ea5e9; /* azul elegante */
+      --radius: 16px;
+    }
+
+    *{ box-sizing: border-box; }
+    body{
+      margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+      color:var(--ink); background: var(--bg);
+    }
+    .wrap{ max-width: 720px; margin: 48px auto; padding: 20px; }
+
+    .card{ background: var(--card); border-radius: var(--radius); border:1px solid #e5e7eb; box-shadow: 0 6px 18px rgba(0,0,0,.04); overflow:hidden; }
+    .header{ padding: 36px 32px 16px; text-align:center; }
+    .title{ font-family: Georgia, "Times New Roman", serif; font-weight: 700; font-size: clamp(28px, 5vw, 40px); margin:0; letter-spacing:.2px; }
+    .subtitle{ margin:8px 0 0; color: var(--muted); font-size: 16px; }
+
+    .content{ padding: 8px 32px 28px; }
+    .row{ display:flex; gap: 14px; align-items:flex-start; padding: 10px 0; }
+    .label{ width: 140px; color: var(--muted); font-size: 14px; }
+    .value{ flex:1; font-weight:600; font-size: 18px; }
+
+    .features{ margin: 6px 0 10px; color: var(--ink); font-size: 15px; }
+
+    hr{ border:0; border-top:1px solid #e5e7eb; margin: 22px 0; }
+
+    /* RSVP minimalista */
+    .rsvp h2{ margin: 0 0 10px; font-size: 20px; }
+    .hint{ color: var(--muted); font-size: 14px; margin-bottom: 12px; }
+
+    form{ display:grid; grid-template-columns: 1fr; gap:12px; }
+    label{ font-size: 14px; color: var(--muted); }
+    input[type="text"], input[type="number"], textarea{
+      width: 100%; padding: 12px 12px; border-radius: 10px; border:1px solid #e5e7eb; outline: none; font-size: 15px; background:#fff;
+    }
+    input:focus, textarea:focus{ border-color: var(--accent); box-shadow: 0 0 0 3px rgba(14,165,233,.12); }
+
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .btn{ appearance:none; cursor:pointer; border:0; padding:12px 16px; border-radius: 12px; font-weight:700; font-size:15px; background: var(--accent); color:white; box-shadow: 0 6px 14px rgba(14,165,233,.25); }
+    .btn.secondary{ background:#f3f4f6; color:#111827; box-shadow:none; }
+    .note{ color: var(--muted); font-size: 13px; }
+
+    .ok{ display:none; margin-top:8px; font-size:14px; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; padding:10px 12px; border-radius:10px; }
+    .err{ display:none; margin-top:8px; font-size:14px; color:#7f1d1d; background:#fef2f2; border:1px solid #fecaca; padding:10px 12px; border-radius:10px; }
+
+    @media print{
+      body{ background: white; }
+      .wrap{ margin:0; padding:0; }
+      .card{ box-shadow:none; }
+      .btn, .note{ display:none !important; }
+    }
+
+    /* Campos editáveis (para você trocar rápido) */
+    mark.edit{ background:white; padding:0 6px; border-radius:6px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="article" aria-label="Convite de aniversário">
+      <header class="header">
+        <!-- EDITAR: Título do evento -->
+        <h1 class="title">Aniversário do João &amp; da Maria</h1>
+        <p class="subtitle">Você é nosso convidado!</p>
+      </header>
+
+      <section class="content">
+        <div class="row">
+          <div class="label">Data &amp; horário</div>
+          <div class="value"><mark class="edit">Sábado, 06/12, a partir do meio dia.</mark></div>
+        </div>
+        <div class="row">
+          <div class="label">Local</div>
+          <div class="value"><mark class="edit">Chácara Tal</mark> — <mark class="edit">Endereço / Cidade</mark></div>
+        </div>
+        <p class="features">Show sertanejo ao vivo • Almoço e Janta.</p>
+
+        <hr />
+
+        <!-- RSVP simples e elegante -->
+        <div class="rsvp">
+          <h2>Confirmação de presença</h2>
+          <p class="hint">Confirme até <strong><mark class="edit">10/11</mark></strong>. Informe seu nome e a quantidade de acompanhantes.</p>
+
+          <!--
+            COMO ARMAZENAR AS RESPOSTAS
+            1) Opção simples (pronta): WhatsApp do anfitrião (recebe a confirmação formatada). Edite WHATSAPP abaixo.
+            2) Opção com planilha: adicione um endpoint de coleta (ex.: Formspree, Getform, ou seu Google Apps Script)
+               e preencha ENDPOINT abaixo. O script envia {name, guests, message, timestamp, event} em JSON via POST.
+          -->
+
+          <form id="rsvpForm">
+            <div>
+              <label for="name">Nome completo</label>
+              <input id="name" name="name" type="text" placeholder="Seu nome" required />
+            </div>
+            <div>
+              <label for="guests">Acompanhantes (número)</label>
+              <input id="guests" name="guests" type="number" min="0" max="20" step="1" value="0" required />
+            </div>
+            <div>
+              <label for="msg">Mensagem (opcional)</label>
+              <input id="msg" name="message" type="text" placeholder="Ex.: Chego às 17h" />
+            </div>
+
+            <div class="actions">
+              <button class="btn" type="submit">Confirmar presença</button>
+            </div>
+
+            <div id="ok" class="ok">Obrigado! Sua confirmação foi registrada.</div>
+            <div id="err" class="err">Não foi possível registrar agora. Tente novamente em instantes.</div>
+          </form>
+        </div>
+
+        <hr />
+        <p class="note">Traje para piscina.</p>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       CONFIGURAÇÕES – PREENCHA APENAS ESTA SEÇÃO E PRONTO ✅
+       ---------------------------------------------------------------------
+       O QUE SÃO "entry.xxxxx"?
+       → São os IDs internos de cada pergunta do seu Google Forms. O Google usa
+         esses IDs para saber em qual pergunta colocar cada resposta.
+       → Ex.: se a pergunta "Nome completo" tiver ID entry.1234567890,
+         então para enviar "Maria Silva" você precisa mandar
+         entry.1234567890=Maria%20Silva no formulário.
+
+       COMO DESCOBRIR SUAS entry.xxxxx (PASSO A PASSO):
+       1) Abra seu Form no editor do Google Forms.
+       2) Clique no menu ⋮ (canto superior direito) → "Obter link pré-preenchido".
+       3) Preencha exemplos em TODAS as perguntas (ex.: Nome=Maria Silva; Acompanhantes=2; Mensagem=Chego às 17h).
+       4) Clique no botão "Obter link" (no rodapé). O Forms vai gerar um link.
+       5) Copie esse link. Ele terá este formato:
+          https://docs.google.com/forms/d/e/FORM_ID/viewform?entry.1234567890=Maria%20Silva&entry.0987654321=2&entry.1122334455=Chego%20às%2017h
+       6) Pronto! Os pedaços "entry.1234567890", "entry.0987654321" etc. são as suas chaves.
+       7) Cole cada uma abaixo em ENTRY_NAME, ENTRY_GUESTS, ENTRY_MESSAGE.
+
+       COMO PEGAR O FORM_ID E A URL DE ENVIO (/formResponse):
+       • A URL do seu formulário SEMPRE é algo como:
+         https://docs.google.com/forms/d/e/FORM_ID/viewform
+       • O ENDPOINT de envio direto (sem abrir o Forms) é a MESMA URL,
+         trocando "/viewform" por "/formResponse":
+         https://docs.google.com/forms/d/e/FORM_ID/formResponse
+       • Cole essa URL em GOOGLE_FORM_ACTION.
+       ===================================================================== */
+
+    // Nome do evento (opcional, só para usar no "Adicionar ao calendário")
+    const EVENT_NAME = "Aniversário do João & da Maria"; // pode manter
+
+    // OPÇÃO A — ENVIO DIRETO (recomendado):
+    // Cole aqui a URL que termina com /formResponse
+    const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/d/e/1FAIpQLScGS2bwrgp9xnF9SD0_x60DrNBBM53rUbCeQ1rU4sm2iY8PtQ/formResponse"; // ex.: "https://docs.google.com/forms/d/e/SEU_FORM_ID/formResponse"
+
+    // (Opcional) OPÇÃO B — Pré-preencher e abrir o Forms (em vez do envio direto):
+    const GOOGLE_FORM_URL = ""; // ex.: "https://docs.google.com/forms/d/e/SEU_FORM_ID/viewform"
+
+    // Mapeie as chaves das perguntas (descobertas no passo 1~7 acima)
+    const ENTRY_NAME    = "entry.376769096"; // ex.: "entry.1234567890" (Nome completo)
+    const ENTRY_GUESTS  = "entry.290770510"; // ex.: "entry.0987654321" (Acompanhantes)
+    const ENTRY_MESSAGE = "entry.1636450235"; // ex.: "entry.1122334455" (Mensagem – opcional)
+
+    // ---------------------------------------------------------------------
+    // Não precisa editar nada abaixo desta linha para funcionar
+    // ---------------------------------------------------------------------
+
+    const form = document.getElementById('rsvpForm');
+    const ok = document.getElementById('ok');
+    const err = document.getElementById('err');
+
+    function addToCalendar(){
+      const title = encodeURIComponent(EVENT_NAME);
+      const details = encodeURIComponent('Celebração com show ao vivo.');
+      const location = encodeURIComponent('Chácara Tal');
+      // EDITAR: datas reais (UTC) no formato YYYYMMDDThhmmssZ
+      const dates = '20251123T190000Z/20251123T230000Z';
+      const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${dates}&details=${details}&location=${location}`;
+      window.open(url, '_blank');
+    }
+
+    document.getElementById('addToCalendar').addEventListener('click', addToCalendar);
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      ok.style.display = 'none';
+      err.style.display = 'none';
+
+      const name = (document.getElementById('name').value || '').trim();
+      const guests = parseInt(document.getElementById('guests').value || '0', 10);
+      const message = (document.getElementById('msg').value || '').trim();
+
+      // Monta os parâmetros para o Google Forms
+      const params = new URLSearchParams();
+      if(ENTRY_NAME)    params.set(ENTRY_NAME, name);
+      if(ENTRY_GUESTS)  params.set(ENTRY_GUESTS, String(guests));
+      if(ENTRY_MESSAGE) params.set(ENTRY_MESSAGE, message);
+
+      try{
+        if(GOOGLE_FORM_ACTION && ENTRY_NAME && ENTRY_GUESTS){
+          // Envio direto e silencioso para a planilha (não abre o Forms)
+          await fetch(GOOGLE_FORM_ACTION, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: params.toString()
+          });
+          ok.style.display = 'block';
+          form.reset();
+        } else if(GOOGLE_FORM_URL && ENTRY_NAME && ENTRY_GUESTS){
+          // Alternativa: abre o Forms pré-preenchido para o convidado clicar "Enviar"
+          const prefill = GOOGLE_FORM_URL + '?' + params.toString();
+          window.open(prefill, '_blank');
+          ok.style.display = 'block';
+          form.reset();
+        } else {
+          // Configuração incompleta — mostramos ajuda rápida
+          err.style.display = 'block';
+          console.warn('[Convite] Configure GOOGLE_FORM_ACTION OU GOOGLE_FORM_URL + ENTRY_* conforme comentários no topo do <script>.');
+        }
+      } catch(_e){
+        err.style.display = 'block';
+        console.error(_e);
+      }
+    });
+  </script>
+</body>
+</html>
